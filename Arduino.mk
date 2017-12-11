@@ -906,6 +906,7 @@ endif
 
 # The name of the main targets
 TARGET_HEX = $(OBJDIR)/$(TARGET).hex
+TARGET_HEX = $(OBJDIR)/$(TARGET).bin
 TARGET_ELF = $(OBJDIR)/$(TARGET).elf
 TARGET_EEP = $(OBJDIR)/$(TARGET).eep
 CORE_LIB   = $(OBJDIR)/libcore.a
@@ -1314,6 +1315,10 @@ else
 	@$(ECHO) "Maximum flash memory of $(BOARD_TAG) is not specified. Make sure the size of $@ is less than $(BOARD_TAG)\'s flash memory"
 	@touch $@.sizeok
 endif
+
+$(OBJDIR)/%.bin: $(OBJDIR)/%.elf $(COMMON_DEPS)
+	@$(MKDIR) $(dir $@)
+	$(OBJCOPY) -O binary $< $@
 
 $(OBJDIR)/%.eep: $(OBJDIR)/%.elf $(COMMON_DEPS)
 	@$(MKDIR) $(dir $@)
